@@ -1,0 +1,7 @@
+lifepm.o: lifepm.c lifepm.inc resdefs.h messages.h loadbmp.h errmsgs.h threads.h \
+  profile.h life.h
+life.o: life.c life.h
+errmsgs.o: errmsgs.c errmsgs.h
+threads.o: threads.c messages.h threads.h
+profile.o: profile.c profile.h
+loadbmp.o: loadbmp.c loadbmp.h

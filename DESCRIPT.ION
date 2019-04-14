@@ -1,0 +1,26 @@
+bitmaps.c Some routines for bitmap file handling
+depend Dependencies created with gcc
+dialogs.res Dialog resource file
+DOS16.mak Makefile for the DOS 16 Bit version
+dos32.lnk Watcom linker file
+DOS32.mak Makefile for the DOS 32 Bit version
+doslife.c Dos main() program
+ehandler.c Eventhandler routines for DOS version
+errmsgs.c Some OS/2 error message functions
+events.c More event handler routines for DOS
+help.rc Online help resource definitions
+install.cmd Installation utility
+license.ipf The GNU license in IPF format
+life.c Life module
+lifepm.c PM implementation (grafiks, threads,...)
+lifepm.def Linker definition file
+lifepm.ico A nice icon for life
+lifepm.lnk Watcom linker definition file
+lifepm.rc PM resource script
+lifepm.scr Online help source
+mouse.c Mouse routines for DOS
+os2emx.mak Makefile for emx-gcc
+os2icc.mak Makefile for icc
+os2wcc.mak Makefile for Watcom C (OS2 version)
+profile.c Save and restore window postitions.
+threads.c Thread handling utilities

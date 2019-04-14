@@ -1,0 +1,21 @@
+DLGINCLUDE 1 "E:\data\src\life\resdefs.h"
+
+DLGTEMPLATE IDD_ABOUT LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "About", IDD_ABOUT, 26, 48, 148, 84, WS_VISIBLE, FCF_SYSMENU | 
+            FCF_TITLEBAR
+    BEGIN
+        CTEXT           "Life for OS/2 PM", -1, 0, 64, 148, 14, DT_VCENTER | 
+                        NOT WS_GROUP
+                        PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
+                        PRESPARAMS PP_FONTNAMESIZE, "14.Helv"
+        CTEXT           "written by", -1, 0, 52, 148, 8, DT_VCENTER | NOT 
+                        WS_GROUP
+        CTEXT           "Ralf Seidel", -1, 0, 40, 148, 8, DT_VCENTER | NOT 
+                        WS_GROUP
+        CTEXT           "eMail: seidel3@wrcs1.rz.uni-wuppertal.de", -1, 0, 
+                        26, 146, 8, DT_VCENTER | NOT WS_GROUP
+                        PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+        PUSHBUTTON      "~Ok", DID_OK, 52, 4, 40, 14
+    END
+END

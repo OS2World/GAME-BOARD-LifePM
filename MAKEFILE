@@ -1,0 +1,63 @@
+MV=mv
+RM=rm -f
+CP=cp
+NBACKUP = *.zip *.exe *.hlp
+
+.PHONY: default dos16 dos32 os2wcc os2emx os2icc
+default:
+	@echo Generisches makefile fr life.
+	@echo Verschiedene Betriebssystem Implementationen sind 
+	@echo durch folgende Kommandos erstellbar:
+	@echo 1. make os2icc : OS/2 PM Version mit IBM C
+	@echo 2. make os2wcc : OS/2 PM Version mit Watcom C
+	@echo 3. make os2emx : OS/2 PM Version mit emx-gcc
+	@echo 4. make dos16  : Dos 16 Bit Version mit Watcom C
+	@echo 5. make dos32  : Dos 32 Bit Version mit Watcom C
+
+os2icc:
+	$(MAKE) -f os2icc.mak
+
+os2wcc:
+	$(MAKE) -f os2wcc.mak
+
+os2emx:
+	$(MAKE) -f os2emx.mak
+
+dos16:
+	$(MAKE) -f dos16.mak
+
+dos32:
+	$(MAKE) -f dos32.mak
+
+
+.PHONY: clean
+clean:
+	$(RM) dos16\\* 
+	$(RM) dos32\\*
+	$(RM) os2emx\\*
+	$(RM) os2wcc\\*
+	$(RM) os2icc\\*
+
+.PHONY: release
+release: os2wcc dos16
+	$(CP) os2wcc/*.exe os2wcc/*.hlp dos16/*.exe .
+	zip -S0 source * -x *.exe *.hlp *.zip readme.1st install.cmd
+	zip -9 LifePM.zip readme.1st install.cmd *.exe *.hlp source.zip
+	$(RM) source.zip *.exe *.hlp
+	
+
+.PHONY: backup
+backup:
+	zip -u f:\backup\life * -x $(NBACKUP)
+
+.PHONY: newbackup
+newbackup:
+	$(MV) f:\backup\life.zip f:\backup\life.bak >& NUL
+	zip f:\backup\life * -x $(NBACKUP)
+
+.PHONY: floppybackup
+# You need 4OS2 for this command!
+floppybackup: backup
+	@pause Insert backup floppy - then press any key
+	@iff isdir a:\life then & except ($(NBACKUP)) xcopy /M * a:\life & else & echo Wrong disk in drive & endiff
+

@@ -1,0 +1,6 @@
+# Linker file for life.exe with Watcom C
+OPTION DESCRIPTION 'The game of life'
+OPTION MODNAME=Life
+OPTION HEAPSIZE=1m
+OPTION STACK=128k
+OPTION OSNAME='DOS4GW'

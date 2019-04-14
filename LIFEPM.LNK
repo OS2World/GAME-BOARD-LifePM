@@ -1,0 +1,18 @@
+# OS/2 Linker definition file for Watcom C
+# Name of the executable
+NAME lifepm.exe
+# Specify target system: OS/2 Version 2.0 or above
+SYSTEM OS2V2_PM
+# A short description saved in the header of the executable
+OPTION DESCRIPTION 'The game of life.'
+# Module name
+OPTION MODNAME=lifepm
+# Default value for programs
+OPTION MANYAUTODATA
+# Heap size - over estimated because it is allocated dynamicly
+OPTION HEAPSIZE=512k
+# Stack size (grows automaticly if to small)
+OPTION STACK=64k
+# Support of long file names
+OPTION NEWFILES
+# Object files to be linked together

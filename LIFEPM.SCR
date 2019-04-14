@@ -1,0 +1,545 @@
+.**********************************************************************
+.* lifepm.scr
+.* 
+.* IPFC help file for Life.
+.*
+.* (C) 1994 by Ralf Seidel
+.*
+.* This file has to be preprocessed using ipfcprep. You can find
+.* this ipfc preprocessor at many servers under the name ipfcpp.zip.
+.**********************************************************************
+
+.* Include a file with some resource definitions.
+.imd resdefs.h
+
+:userdoc.
+:title.Life Help
+:docprof toc=12.
+
+.* The main help panel
+
+:h1 id=&PANEL_MAIN. res=&PANEL_MAIN..Using Life
+:i1.Using Life
+
+:lines align=center.
+Welcome to the Game of Life
+:elines.
+
+:note.This program is distributed in the hope that it will be useful,
+but :hp8.WITHOUT ANY WARRANTY:ehp8.; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See :link
+reftype=hd refid=&PANEL_GNU..GNU General Public License:elink. for more
+details.
+
+:p.First of all we want to know what life is. Well, we could discuss
+this question under various aspects, but for this program life is assumed
+to be very simple. Imagine a planet somewhere in an unkown galaxy where
+the first monocellular creatures have come alive. Although their
+behaviour is rather primitive they already have a clear idea about their
+social living conditions, i.e. they want to have some company, but they
+don't want to live in an overcrowded environment. Due to the lack of
+eyes they only examine their nearest neighbourhood and feel good if they
+find two or three cells around them. In particular, if there is an empty
+place surrounded by three living cells these three creatures decide to
+have sex and fill the empty place with a new member of their species.
+However, if a cell has less than two friends, it feels lonely and
+decides to die. The same happens if one of our friends has more than
+three neighbours, because as mentioned above, they don't like overcrowed
+places.
+
+:p.The program you are currently using tries to simulate this planet.
+The main window represents the surface, and every field in the grid shown
+represents a place where a cell can live. It is up to you to play God
+and populate the planet with an initial number of cells and watch them
+growing.
+
+:p.Use the mouse buttons to set (mouse button 1) or delete (button 2)
+new cells and press the <Space> key to see how the next generation looks
+like. You can use the <Enter> key to begin calculating new generations
+until <Enter> is pressed again.
+
+:note.The program doesn't recognize if the planet has come to fixed
+state so you have to stop the calculation even if nothing changes
+anymore.
+
+:p.What makes this program different?
+
+:p.The game of life is rather old and there are already some
+implementations for various operating systems. One reason to write this
+program was that no OS/2 version allows to save and restore figures you
+have designed. But there is one more interesting feature of this
+implemetation - it uses a totally new algorithm to calculate the cell
+generations, and this algorithm is much faster in many cases.
+
+:p.Traditionally the way to compute the next generation worked like this:
+
+:ol compact.
+
+:li.Create a new initially empty field of cells with the same size
+as the current one.
+
+:li.Loop through all cells of the current planet and check whether each
+cell is and stays alive or if an empty cell has the right number of
+neighbours to become alive. In this cases change the state in the new
+field.
+
+:li.Make the new field the current one.
+
+:eol.
+
+:p.Well, the algorithm described is quite short and easy to understand
+but it has a big disadvantage: it is very common that the planet has a
+lot of empty but only very few living cells. However the only chance
+for an empty cell to become alive is a populated neighbourhood. The
+algorithm described doesn't pay any attention to this fact. It counts
+the neighbours of a dead cell even if the next living one is miles away.
+The idea to speed up the calculation is to examine only living cells and
+their nearest neighbours. The algorithm looks like this:
+
+:ol compact.
+
+:li.Create a new initially empty field of cells with the same size
+as the current one.
+
+:li.Find the first living cell which hasn't been checked so far - this
+is rather fast because you can use :hp1.memchr():ehp1. which results in
+inline assembler code. If there is none, just quit.
+
+:li.Mark the cell as already checked, count its neighbours and set
+the state in the new field if neccessary, i.e. if the cell stays alive.
+
+:li.Examine its neighbours. If they are already checked, do nothing,
+otherwise mark them as checked and set their new state. If the cell was
+not empty call (3) (marking must not be repeated of course). Yes, this
+is the recursion! The recursion stops if the cell is dead.
+
+:li.loop back to (2).
+
+:eol.
+
+:p.That's it - if you need more information about this algorithm
+and it's implementation: RTS (Read The Sources). Have a look on
+"life.c" where you will find both algorithms described.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_GNU..Condition for using Life:elink.
+:li.:link reftype=hd refid=&PANEL_CREDITS..Credits:elink.
+:li.:link reftype=hd refid=&PANEL_BUGS..Known bugs:elink.
+:li.:link reftype=hd refid=&PANEL_HISTORY..Revision history:elink.
+:li.:link reftype=hd refid=&PANEL_FUTURE..Plans for future versions:elink.
+:li.:link reftype=hd refid=&PANEL_AUTHOR..The author:elink.
+:esl.
+
+
+.*** Information about how to select cells ***
+
+
+:h1 id=&PANEL_SELECTING..Selecting Cells
+:i1.Selecting Cells
+
+:lines align=center.
+Selecting Cells
+:elines.
+
+:p.The program allows you to select rectangluar areas inside the main
+window for further processing. To do so, you have to move the mouse to
+the upper left corner of the rectangle you want to mark. Then, hold down
+one of the control keys and press the first mouse button. Once you have
+done so, a rectangle will apear which can be extended by moving the mouse.
+If you release the mouse button the selected rectangle will be marked and
+you can continue with actions regarding this area.
+
+:note.It is not possible to select an area while a new generation is
+computed. If the above description doesn't work try to stop all
+calculations by pressing <Esc>.
+
+
+.**********************************************************************
+.* Help for the various menu entries
+.**********************************************************************
+
+.* File commands
+
+:h1.Menu items
+ 
+:h2 id=&PANEL_FILE. res=&PANEL_FILE..File Commands
+
+:lines align=center.
+The life file commands
+:elines.
+
+:p.Life allows you to save and restore figures you have created.
+These figures are saved as two color (monochrome) bitmaps, using the
+standard bitmap file format of OS/2. You can save the whole planet
+(i.e. the window contents) or a previously selected area 
+(see :link reftype=hd refid=&PANEL_SELECTING..Selecting cells:elink.)
+
+:p.The following menu items exist:
+
+:dl break=all tsize=3.
+
+:dt.:hp2.Load:ehp2.
+
+:dd.Load a figure from disk. This menu item brings up a file selection
+dialog where you can choose a bitmap to be inserted into the current
+environment. If the bitmap is smaller than the program window you have
+to choose the place where to put it.
+
+:dt.:hp2.Save selected:ehp2.
+
+:dd.This menu item is enabled only if an area is currently selected.
+It allows you to save this area.
+
+:dt.:hp2.Save all:ehp2.
+
+:dd.Choosing this menu item, you can save the total planet.
+
+:dt.:hp2.Exit:ehp2.
+
+:dd.You may guess what happens if you select this command.
+
+:edl.
+
+
+.*** Help about the `life' commands ***
+
+
+:h2 id=&PANEL_LIFE. res=&PANEL_LIFE..The life menu items
+
+:lines align=center.
+To live and let die
+:elines.
+
+:p.Choosing :hp2.Step:ehp2. lets the program calculate the next
+generation of the cells, while :hp2.Run:ehp2. enters a loop for
+computing new generations continuously until :hp2.Run:ehp2. or
+:hp2.Stop:ehp2. is selected.
+
+:p.:hp2.Clear:ehp2. just deletes all cells and :hp2.Randomize:ehp2.
+inserts some new cells at random positions.
+
+
+.*** Help about the edit commands ***
+
+
+:h2 id=&PANEL_EDIT. res=&PANEL_EDIT..Edit Commands
+
+:lines align=center.
+Editing the planet
+:elines.
+
+:p.Once you have selected some cells you can put them into the clipboard.
+If you choose the :hp2.Cut:ehp2. option all cells in the marked area are
+deleted and you can place them somewhere else by selecting
+:hp2.Paste:ehp2.
+
+:p.Using :hp2.Copy:ehp2. copies the selected rectangle into the
+clipboard but leaves the planet as it is. If you have done so the area
+isn&apos.t marked any longer and you can insert the previously selected
+rectangle to the planet by choosing :hp2.Paste:ehp2..
+
+:p.:hp2.Paste:ehp2. tries to get a bitmap from the clipboard to insert
+it into the planet. If the figure is smaller than the size of the window
+you will be able to choose the place where to put the figure. If the figure
+is too large the program will reject it and a message box will apear.
+
+.*** Help for the options menu items ***
+
+.*** Algorithm options ***
+
+:h2 id=&PANEL_OPTALG. res=&PANEL_OPTALG..Algorithm options
+
+:lines align=center.
+Choosing the algorithm
+:elines.
+
+:p.You have the possiblity to select between two different algorithms
+to compute new generations in the game of life. The first one, called
+classical or sequential, does a good job if there are a lot of living
+cells on your planet. The second (recursive) one is faster if there is
+only an average or small amount of cells alive. The speed difference
+depends strongly on the number of cells alive. For example if the planet
+is completely empty, the recursive algorithm is more than ten times
+faster!!! Although this example isn't very interessting, it shows
+how big the difference can be.
+
+:p.If you are more interested in the speed difference have a look at the
+DOS (:hp1.uargh:ehp1.) version of this program. Because the DOS programs
+are using character modes only, the difference can be recognized easily
+and the DOS versions are measuring the average time needed to step to
+the next generation.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_MAIN..General information about Life:elink.
+:esl.
+
+.*** Topology options ***
+
+:h2 id=&PANEL_OPTTOP. res=&PANEL_OPTTOP..Topology options
+
+:lines align=center.
+Choosing the surface design of the planet
+:elines.
+
+:p.You are able to select the logical design of the planet. Switch back
+to the Middle Ages and let the cells believe that their world is a finite
+plane or build a bridge between north and south and let the east and the
+west shake their hands.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_MAIN..General information about Life:elink.
+:esl.
+
+.*** Cell size options
+
+:h2 id=&PANEL_OPTSIZE. res=&PANEL_OPTSIZE..Size options
+
+:lines align=center.
+Setting the cell size.
+:elines.
+
+:p.Choose the size of one cell in window coordinates. The size of the 
+window will change but the number of cells and rows on your planet will
+stay constant.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_MAIN..General information about Life:elink.
+:esl.
+
+
+.*** Help about the help items ***
+
+
+:h2 res=&PANEL_HELP..The help items
+
+:lines align=center.
+Standard help menu items.
+:elines.
+
+:p.There is not much to say about these menu items. Select any of the
+commands to get more help. If you don't know how to use the online help
+system select :hp2.Using Help:ehp2. first.
+
+.**********************************************************************
+.* Help related to some dialogs.
+.**********************************************************************
+
+:h1.Dialogs
+
+.*** About dialog ***
+
+
+:h2 res=&PANEL_ABOUT..About Life
+
+:lines align=center.
+The about life dialog.
+:elines.
+
+:p.This dialog gives you some (boring) information about the author of
+this program. Simply press OK to leave it.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_MAIN..General information about Life:elink.
+:li.:link reftype=hd refid=&PANEL_GNU..Condition for using Life:elink.
+:li.:link reftype=hd refid=&PANEL_CREDITS..Credits:elink.
+:li.:link reftype=hd refid=&PANEL_AUTHOR..The author:elink.
+:esl.
+
+
+.**********************************************************************
+.* Additional informations
+.**********************************************************************
+
+.*** The GNU license ***
+
+:h1 id=&PANEL_GNU..GNU General Public License
+:i1.GNU General Public License
+
+.im license.ipf
+
+
+.*** Some information about the author of this program ***
+
+
+:h1 id=&PANEL_AUTHOR..The author of LifePM
+:i1.The author of LifePM
+
+:p.This program was written by Ralf Seidel who is currently a student of
+mathematics at the BUGH Wuppertal (:hp2.B:ehp2.ergische
+:hp2.U:ehp2.niversitÑt :hp2.G:ehp2.esamt:hp2.h:ehp2.ochschule
+Wuppertal). Wuppertal is a small town in West-Germany near Cologne. 
+
+:p.You can reach him via eMail (InterNet): 
+
+:lm margin=4.:p.seidel3@wrcs1.urz.uni-wuppertal.de 
+
+:lm margin=1.:p.or via Snail Mail:
+
+:lm margin=4.
+:lines. 
+Ralf Seidel 
+WÅlfrather Str. 45 
+42105 Wuppertal
+Germany
+:elines. 
+:lm margin=1.
+
+:p.Any kind of mail is welcome, may it be hints, comments,
+wishes for future  releases, bug reports, corrections concerning my
+english or (less welcome) complaints. In other words&colon. Drop me a
+note, and I&apos.ll be happy!
+
+:note.In other programs I used the eMail address
+seidel3@wrcs3.urz.uni-wuppertal.de but there seems to be a problem
+with the mail system and mail sent to this adress is very likely to land
+in an internet black hole.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_MAIN..General information about Life:elink.
+:li.:link reftype=hd refid=&PANEL_GNU..Condition for using Life:elink.
+:esl.
+
+
+.*** Credits ***
+
+
+:h1 id=&PANEL_CREDITS..Credits
+:i1.Credits
+
+:lines align=center.
+People involved creating LifePM
+:elines.
+
+:p.There are a lot of people at the internet who helped me learning OS/2
+PM programming, too much to mention them here all. The two most important
+ones are Eberhard Mattes, the author of the emx utilities, and Larry
+Salomon Jr., the publisher of the Electronical Developers' Magazine for
+OS/2 (EDM/2). Thanks a lot for their great work.
+
+:p.I would also like to thank Nicole Greiber who gave me a lot of useful
+hints and last not least Thomas Rehlich should be mentioned here. He is
+my personal Unix/Linux expert, and he was the one who showed me the X11
+implementation of life. I would never have found it as it is not
+included in the slackware distribution of Linux.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_AUTHOR..The author:elink.
+:esl.
+
+
+.*** Bugs and problems ***
+
+
+:h1 id=&PANEL_BUGS..Bugs and Problems
+:i1.Bugs and Problems
+
+:lines align=center.
+Known bugs
+:elines.
+
+:p.Window resizing is a bit problematic. I didn't find any possiblity to
+intercept a PM message which allows to modify window sizes before the
+window is redrawn. The only way I have found is to resize the window
+again after it has already been resized by user's interaction. However I
+plan to use a window which doesn't depend on the current planet size. It
+will show parts only allowing to move around with scrollbars.
+
+:p.The rest seems to work quite stable. If you find any bugs, don't
+hesitate to drop me a note (seidel3@wrcs1.urz.uni-wuppertal.de).
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_MAIN..General information about Life:elink.
+:li.:link reftype=hd refid=&PANEL_HISTORY..Revision history:elink.
+:li.:link reftype=hd refid=&PANEL_FUTURE..Future plans:elink.
+:esl.
+
+
+.*** Revision history ***
+
+
+:h1 id=&PANEL_HISTORY..Revision history
+:i1.Revision history
+
+:lines align=center.
+History of life
+:elines.
+
+:parml break=all tsize=4.
+
+:pt.V1.0 Jan 95 
+:pd.Initial release.
+
+:eparml.
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_FUTURE..Future plans:elink.
+:esl.
+
+
+.*** Future plans ***
+
+
+:h1 id=&PANEL_FUTURE..Future plans
+:i1.Future plans
+
+:lines align=center.
+The future of life.
+:elines.
+
+:p.Version 1.0 is released, but I still have some ideas to improve the
+program. In brief:
+
+:ol.
+
+:li.Use an even better algorithm found in Xlife, a X11 version of life.
+
+:li.Allow window and planet size to be different. Use scroll bars to move
+around.
+
+:li.Add a status line where the number of generations computed and other
+information is displayed.
+
+:li.Improve the editing abilities, allowing rotation and mirroring of
+selected areas and loaded bitmaps.
+
+:li.Support of the xlife pattern file format to load predefined figures.
+
+:li.LifePM is programed using C as the only language. Up to now I have
+waited for someone who develops an easy to use C++ class library for
+PM-programming. However, it seems to take too long and I have decided to
+do this by myself. The next release of LifePM will be programmed in
+C++ to test my efforts.
+
+:eol.
+
+:p.When I had nearly finished this program my flat mate showed me a X11
+version of life which is really much faster than this implementation.
+However, I was too lazy to use it, since using this algorithm would
+result in a completely different life module. If there are some people
+who are interested in further enhancement of this program (i.e. if I
+will get some mail from you guys) I will try to port this algorithm to
+use it with my implementation of life.
+
+:p.Of course, if you have ideas for some enhancements don't hesitate
+to send me a note. 
+See :link reftype=hd refid=&PANEL_AUTHOR..The author of LifePM:elink. for
+my email address.
+
+
+:p.Related topics&colon. 
+:sl compact.
+:li.:link reftype=hd refid=&PANEL_MAIN..General information about Life:elink.
+:li.:link reftype=hd refid=&PANEL_HISTORY..Revision history:elink.
+:esl.
+
+
+:euserdoc.

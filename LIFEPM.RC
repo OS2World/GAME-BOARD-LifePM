@@ -1,0 +1,164 @@
+/*************************************************************************\
+ * life.rc
+ *
+ * This resource file contains the menu and string	table definitions 
+ * for the program LIFE.EXE
+\*************************************************************************/
+#include <os2.h>
+#include "resdefs.h"
+
+ICON IDR_MAIN lifepm.ico
+
+/**********************************************************************\
+ * Menu definitions.
+\**********************************************************************/
+MENU IDR_MAIN PRELOAD
+	BEGIN
+	SUBMENU 	 "~File", IDM_FILE, MIS_TEXT
+		BEGIN
+		MENUITEM	"~Load\tF3",			IDM_LOAD,		MIS_TEXT
+		MENUITEM	"~Save Selected\tF2",IDM_SAVE,		MIS_TEXT,	MIA_DISABLED
+		MENUITEM "Save ~all",			IDM_SAVEALL,	MIS_TEXT
+		MENUITEM SEPARATOR
+		MENUITEM "~Exit",					SC_CLOSE,		MIS_SYSCOMMAND
+		END
+	SUBMENU 	 "~Life", IDM_LIFE, MIS_TEXT
+		BEGIN
+		MENUITEM "~Step\t<Space>",		IDM_STEP,		MIS_TEXT
+		MENUITEM "~Run\t<Enter>",		IDM_RUN,			MIS_TEXT
+		MENUITEM "~Stop\t<Esc>",		IDM_STOP,		MIS_TEXT,	MIA_DISABLED
+		MENUITEM SEPARATOR
+		MENUITEM "~Clear\tF9",			IDM_CLEAR,		MIS_TEXT
+		MENUITEM "~Randomize\tF10",	IDM_RANDOMIZE,	MIS_TEXT
+		END
+	SUBMENU "~Options", IDM_OPTIONS, MIS_TEXT
+		BEGIN
+		MENUITEM "~Algorithm",	 		IDM_OPTALG,		MIS_SUBMENU
+			BEGIN
+			MENUITEM "~Sequential\tCtrl-S",	IDM_OPTALGSEQ,	MIS_TEXT
+			MENUITEM "~Recursive\tCtrl-R",	IDM_OPTALGREC,	MIS_TEXT
+			END
+		MENUITEM "~Topology",			IDM_OPTTOP,		MIS_SUBMENU
+			BEGIN
+			MENUITEM "~Finit\tCtrl-F",			IDM_OPTTOPFINIT,	MIS_TEXT
+			MENUITEM "~Torus\tCtrl-T",			IDM_OPTTOPTORUS,	MIS_TEXT
+			END
+		MENUITEM "Cell ~Size",			IDM_OPTSIZE,	MIS_SUBMENU
+			BEGIN
+			MENUITEM	"~1x1\t1",			IDM_OPTSIZE1x1,	MIS_TEXT
+			MENUITEM	"~2x2\t2",			IDM_OPTSIZE2x2,	MIS_TEXT
+			MENUITEM	"~3x3\t3",			IDM_OPTSIZE3x3,	MIS_TEXT
+			MENUITEM	"~4x4\t4",			IDM_OPTSIZE4x4,	MIS_TEXT
+			MENUITEM	"~5x5\t5",			IDM_OPTSIZE5x5,	MIS_TEXT
+			MENUITEM	"~6x6\t6",			IDM_OPTSIZE6x6,	MIS_TEXT
+			MENUITEM	"~7x7\t7",			IDM_OPTSIZE7x7,	MIS_TEXT
+			MENUITEM	"~8x8\t8",			IDM_OPTSIZE8x8,	MIS_TEXT
+			MENUITEM	"~9x9\t9",			IDM_OPTSIZE9x9,	MIS_TEXT
+			MENUITEM	"~10x10\t0",		IDM_OPTSIZE10x10,	MIS_TEXT
+			END			
+		MENUITEM "~Grid\tCtrl-G",		IDM_OPTGRID,	MIS_TEXT
+		END
+	SUBMENU	"~Edit", IDM_EDIT, MIS_TEXT
+		BEGIN
+		MENUITEM "~Copy\tCtrl+Del",	IDM_COPY,		MIS_TEXT,	MIA_DISABLED
+		MENUITEM "C~ut\tShift+Del",	IDM_CUT,			MIS_TEXT,	MIA_DISABLED
+		MENUITEM	"~Paste\tCtrl+Ins",	IDM_PASTE,		MIS_TEXT
+		END
+	SUBMENU	"~Help", IDM_HELP, MIS_TEXT
+		BEGIN
+		MENUITEM "Help ~Index",			SC_HELPINDEX,		MIS_SYSCOMMAND
+		MENUITEM "~General Help",		SC_HELPEXTENDED,	MIS_SYSCOMMAND
+		MENUITEM "~Using Help",			IDM_HELP4HELP,		MIS_TEXT
+/*		MENUITEM "~Keys Help",			SC_HELPKEYS,		MIS_SYSCOMMAND*/
+		MENUITEM SEPARATOR
+		MENUITEM	"~About",				IDM_ABOUT,		MIS_TEXT
+		END
+	END
+
+/**********************************************************************\
+ * Accelarations definitions.
+\**********************************************************************/
+ACCELTABLE IDR_MAIN PRELOAD
+	BEGIN
+	VK_DELETE,	IDM_CUT,				VIRTUALKEY,		SHIFT 
+	VK_DELETE,	IDM_COPY,			VIRTUALKEY,		CONTROL
+	VK_INSERT,	IDM_PASTE,			VIRTUALKEY,		SHIFT
+	VK_F2,		IDM_SAVE,			VIRTUALKEY
+	VK_F3,		IDM_LOAD,			VIRTUALKEY
+	VK_SPACE,	IDM_STEP,			VIRTUALKEY
+	VK_NEWLINE,	IDM_RUN,				VIRTUALKEY
+	VK_ENTER,	IDM_RUN,				VIRTUALKEY
+	VK_ESC,		IDM_STOP,			VIRTUALKEY
+	VK_F9,		IDM_CLEAR,			VIRTUALKEY
+	VK_F10,		IDM_RANDOMIZE,		VIRTUALKEY
+
+	"r",			IDM_OPTALGREC,		CONTROL
+	"s",			IDM_OPTALGSEQ,		CONTROL
+	"f",			IDM_OPTTOPFINIT,	CONTROL
+	"t",			IDM_OPTTOPTORUS,	CONTROL
+	"g",			IDM_OPTGRID,		CONTROL
+	"R",			IDM_OPTALGREC,		CONTROL
+	"S",			IDM_OPTALGSEQ,		CONTROL
+	"F",			IDM_OPTTOPFINIT,	CONTROL
+	"T",			IDM_OPTTOPTORUS,	CONTROL
+	"G",			IDM_OPTGRID,		CONTROL
+	"1",			IDM_OPTSIZE1x1,	CHAR
+	"2",			IDM_OPTSIZE2x2,	CHAR
+	"3",			IDM_OPTSIZE3x3,	CHAR
+	"4",			IDM_OPTSIZE4x4,	CHAR
+	"5",			IDM_OPTSIZE5x5,	CHAR
+	"6",			IDM_OPTSIZE6x6,	CHAR
+	"7",			IDM_OPTSIZE7x7,	CHAR
+	"8",			IDM_OPTSIZE8x8,	CHAR
+	"9",			IDM_OPTSIZE9x9,	CHAR
+	"0",			IDM_OPTSIZE10x10,	CHAR
+	END
+
+/**********************************************************************\
+ * Strings
+\**********************************************************************/
+STRINGTABLE
+	BEGIN
+	IDSTR_LOADDLGTITLE "Select an image to insert"
+	IDSTR_SAVEDLGTITLE "Give the thing a name"
+	IDSTR_HELPWINDOWTITLE "LifePM online help"
+	END
+
+/**********************************************************************\
+ * Possible error message.
+\**********************************************************************/
+MESSAGETABLE
+	BEGIN
+	IDMSG_WININITIALIZE "Error using WinInitialize."
+	IDMSG_WINCREATEMSGQUEUE  "Error using WinCreateMsgQueue."
+	IDMSG_WINREGISTERCLASS "Error using WinRegisterClass."
+	IDMSG_WINCREATESTDWINDOW "Error using WinCreateStdWindow."
+	IDMSG_WINCREATEHELPINSTANCE "Error using WinCreateHelpInstance.\n""
+		""Help will be disabled.\n""
+		""To use the online help the file %s has to be placed ""
+		""either in the current working directory or in one of the ""
+		""directorys your HELP environment variable points to."
+	IDMSG_MALLOC "Error using malloc"
+	IDMSG_WINASSOCIATEHELPINSTANCE "Error using WinAssociateHelpInstance.\n""
+		""Help will be disabled."
+	IDMSG_CREATEMEMPS	"Error using CreateMemPS!"
+	IDMSG_BEGINTHREAD "Error using _beginthread!" 
+	IDMSG_UNKOWNTHREADSTART "Recieved a start thread message of unknown type."
+	IDMSG_UNKOWNTHREADEND "Recieved a end thread message of unknown type."
+	IDMSG_WINDLGBOX "Error using WinDlgBox."
+	IDMSG_MAKEBITMAP "Error using MakeBitmap."
+	IDMSG_WINOPENCLIPBRD "Error using WinOpenClipbrd."
+	IDMSG_WINSETCLIPBRDDATA "Error using WinSetClipbrdData."
+	IDMSG_GPIQUERYBITMAPINFOHEADER "Error using GpiQueryBitmapInfoHeader."
+	IDMSG_WINFILEDLG "Error using WinFileDlg"
+	IDMSG_BITMAPTOLARGE "The image you want to insert is to large!\n""
+		""Planet width : %u - Image width : %u\n""
+		""Planet height: %u - Image height: %u"
+	IDMSG_WRONGBITMAPFORMAT "Sorry, the bitmap you want to insert has the ""
+		""wrong format.\nOnly two color bitmaps can be used."
+	IDMSG_WRONGSWITCHVALUE "Reached invalid position in switch statement"
+	END
+
+
+rcinclude help.rc	
+rcinclude dialogs.dlg
